@@ -1,0 +1,59 @@
+set shell = createobject("wscript.shell")
+
+' Function to type a message into Notepad
+sub TypeMessageInNotepad(message)
+    shell.run "notepad.exe"
+    wscript.sleep 2000 
+    for i = 1 to len(message)
+        shell.sendkeys mid(message, i, 1)
+        wscript.sleep 50 
+    next
+end sub
+
+' Save the text file to usb
+sub SaveFile(filepath)
+    shell.sendkeys "^s"  ' Ctrl + S
+    wscript.sleep 1000 
+    shell.sendkeys filepath
+    wscript.sleep 1000 
+    shell.sendkeys "{ENTER}"
+    wscript.sleep 1000 
+    shell.sendkeys "%{F4}" ' Alt + F4 to close Notepad
+end sub
+
+' Function to open Chrome and navigate to multiple websites 
+sub OpenChrome()
+    ' Define the path to Chrome 
+    chromePath = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+    urls = Array("https://www.youtube.com", "https://www.google.com","https://mail.google.com", "https://www.amazon.com", "https://www.drdo.gov.in", "https://parivahan.gov.in")
+
+    ' Loop through the URLs and open each one in a new tab with a delay of 2000 ms between each
+    For Each url In urls
+        shell.run """" & chromePath & """ " & url
+        wscript.sleep 2000
+    Next
+end sub
+
+' Main Script
+' Step 1: Open Notepad and write the message
+message = "This is a VB script project using USB. It works just like rubber ducky." & vbCrLf & _
+          "Name: Ayush Tandon" & vbCrLf & _
+          "College: DTU" & vbCrLf & _
+          "CGPA: 9.00" & vbCrLf & _
+          "Gender: Male" & vbCrLf & _
+          "This project demonstrates how to automate tasks using VBScript." & vbCrLf & _
+"It initiates by launching Notepad and inputting predefined text, simulating a simple data auto-typing." & vbCrLf & _
+"Subsequently, it opens Google Chrome and navigates to specific websites." & vbCrLf & _
+"This is a simple example of how bad things can happen if you plug a USB into a computer. It's important to be careful about what you plug in."
+
+TypeMessageInNotepad(message)
+
+' Step 2: Save the file in the USB drive 
+SaveFile "E:\NewMessage.txt"
+
+' Step 3: Wait for 10 seconds 
+wscript.sleep 10000
+
+' Step 4: Open Chrome and navigate to multiple websites
+OpenChrome()
